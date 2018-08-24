@@ -105,11 +105,9 @@
 #include "llvm/IR/DebugInfoMetadata.h"
 #include "llvm/IR/Function.h"
 #include "llvm/IR/Instructions.h"
-#include "llvm/LinkAllPasses.h"
-#include "llvm/Pass.h"
 #include "llvm/Support/Casting.h"
 #include "llvm/Support/raw_ostream.h"
-#include "llvm/Transforms/Utils/Dependency.h"
+#include "llvm/Dependency.h"
 #include <stack>
 
 #include "llvm/Dependency.h"
