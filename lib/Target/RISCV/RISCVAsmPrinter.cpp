@@ -27,6 +27,7 @@
 #include "llvm/MC/MCSymbol.h"
 #include "llvm/Support/TargetRegistry.h"
 #include "llvm/Support/raw_ostream.h"
+#include "llvm/Dependency.h"
 using namespace llvm;
 
 #define DEBUG_TYPE "asm-printer"
@@ -77,6 +78,14 @@ void RISCVAsmPrinter::EmitInstruction(const MachineInstr *MI) {
   // Do any auto-generated pseudo lowerings.
   if (emitPseudoExpansionLowering(*OutStreamer, MI))
     return;
+  
+  if (MI->getDebugLoc()) {
+    DependencyInstrInfoManager *mgr = reinterpret_cast<DependencyInstrInfoManager *>
+      (MI->getDebugLoc()->getLine());
+    mgr->doFolding();
+    for (auto DI : *mgr)
+      OutStreamer->AddComment(DI->getInfo()); 
+  }
 
   MCInst TmpInst;
   LowerRISCVMachineInstrToMCInst(MI, TmpInst, *this);
