@@ -83,8 +83,9 @@ void RISCVAsmPrinter::EmitInstruction(const MachineInstr *MI) {
     DependencyInstrInfoManager *mgr = reinterpret_cast<DependencyInstrInfoManager *>
       (MI->getDebugLoc()->getLine());
     mgr->doFolding();
-    for (auto DI : *mgr)
-      OutStreamer->AddComment(DI->getInfo()); 
+    for (int i = 0; i < mgr->sz; i++)
+    //for (auto DI : *mgr)
+      OutStreamer->AddComment(mgr->arr[i]->getInfo()); 
   }
 
   MCInst TmpInst;

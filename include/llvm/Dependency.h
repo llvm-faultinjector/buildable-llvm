@@ -14,6 +14,7 @@
 #include "llvm/Pass.h"
 #include "llvm/IR/Instructions.h"
 #include "llvm/IR/DebugInfoMetadata.h"
+#include <vector>
 
 namespace llvm {
 
@@ -78,16 +79,23 @@ namespace llvm {
 
   class DependencyInstrInfoManager
   {
-    using InfoType = SmallVector<DependencyInstrInfo *, 8>;
-    InfoType vec;
+    //using InfoType = SmallVector<DependencyInstrInfo *, 16>;
+    //InfoType vec;
+    size_t sz;
+    DependencyInstrInfo **arr;
   public:
+
+    DependencyInstrInfoManager() {
+        arr = new DependencyInstrInfo*[255];
+        sz = 0;
+    }
 
     bool Verify() const {
 
     }
 
     void doFolding() {
-      InfoType tmp;
+      /*InfoType tmp;
       for (auto DI : vec) {
         for (auto TDI : tmp) {
           if (TDI->getSource() == DI->getSource()) {
@@ -101,20 +109,24 @@ namespace llvm {
       NEXT:
         ;
       }
-      vec = tmp;
+      vec = tmp;*/
     }
 
     void addInfo(DependencyInstrInfo *info) {
-      vec.push_back(info);
+      errs() << "Start adding\n";
+      //vec.push_back(info);
+      arr[sz++] = info;
+      errs() << "Add info\n";
     }
 
-    InfoType::const_iterator begin() const {
-      return vec.begin();
+    DepdencyInstrInfo** begin() const {
+      //return vec.begin();
+      return arr;
     }
-
+/*
     InfoType::const_iterator end() const {
       return vec.end();
-    }
+    }*/
   };
 
   FunctionPass *createInterproceduralDependencyCheckPass();

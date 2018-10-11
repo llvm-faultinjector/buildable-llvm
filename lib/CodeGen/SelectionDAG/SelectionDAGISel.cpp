@@ -184,6 +184,7 @@ class BranchManager {
 public:
   BranchManager(Function *F) : function(F) {
     if (!F->isIntrinsic()) {
+        errs() << F->getName() << '\n';
       start = new BlockNode(&F->getEntryBlock());
       nodes.push_back(start);
       if (BranchInst *bi =
